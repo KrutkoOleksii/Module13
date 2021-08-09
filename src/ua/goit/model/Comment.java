@@ -1,4 +1,4 @@
-package homework;
+package ua.goit.model;
 
 import com.google.gson.annotations.SerializedName;
 

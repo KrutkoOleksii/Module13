@@ -1,4 +1,4 @@
-package homework;
+package ua.goit.util;
 
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;

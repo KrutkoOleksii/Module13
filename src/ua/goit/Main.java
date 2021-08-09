@@ -1,12 +1,13 @@
-package homework;
+package ua.goit;
 
 import com.google.gson.Gson;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ua.goit.model.*;
+import ua.goit.service.MyRetrofitClient;
+import ua.goit.util.MyRetrofitConfig;
+
 import java.io.*;
 import java.util.*;
-
-import static homework.MyRetrofitConfig.createClient;
-import static homework.MyRetrofitConfig.execute;
 
 
 public class Main {
@@ -14,19 +15,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // создание клиента Retrofit
-        MyRetrofitClient client = createClient(BASE_URL,
+        MyRetrofitClient retrofitClient = MyRetrofitConfig.createClient(BASE_URL,
                 GsonConverterFactory.create(), MyRetrofitClient.class);
 
         // task #1/4 получение информации обо всех пользователях
         System.out.println("\n*************************************");
         System.out.println("Task #1/4. Show all users\n");
-        List<User> listUsers = execute(client.GetToModel());
+        List<User> listUsers = MyRetrofitConfig.execute(retrofitClient.GetToModel());
         System.out.println(listUsers);
 
         // task #1/1 создание нового объекта
         System.out.println("\n*************************************");
         System.out.println("Task #1/1. Add new object 'User'\n");
-        User responseAdd = execute(client.addObject(getNewUser()));
+        User responseAdd = MyRetrofitConfig.execute(retrofitClient.addObject(getNewUser()));
         System.out.println(responseAdd);
 
         // Task #1/2 обновление объекта
@@ -37,14 +38,14 @@ public class Main {
         listUsers.get(idUpdate-1).setName("New Name");
         listUsers.get(idUpdate-1).setEmail("newmail@mailservice.in.ua");
         listUsers.get(idUpdate-1).setPhone("215-050505-777");
-        User responseUpdate = execute(client.updateUser(listUsers.get(idUpdate-1),idUpdate.toString()));
+        User responseUpdate = MyRetrofitConfig.execute(retrofitClient.updateUser(listUsers.get(idUpdate-1),idUpdate.toString()));
         System.out.println(responseUpdate);
 
         // Task #1/3 удаление объекта
         String idDelete = "1";
         System.out.println("\n*************************************");
         System.out.println("Task #1/3. Delete object 'User' with id="+idDelete+"\n");
-        User responseDelete = execute(client.deleteUser(idDelete));
+        User responseDelete = MyRetrofitConfig.execute(retrofitClient.deleteUser(idDelete));
         System.out.println("User deleted:");
         System.out.println(responseDelete);
 
@@ -52,21 +53,21 @@ public class Main {
         Integer findID = 4;
         System.out.println("\n*************************************");
         System.out.println("Task #1/5. Find object 'User' by ID = '"+findID+"'\n");
-        List<User> responseUserByID = execute(client.getUserByID(findID));
+        List<User> responseUserByID = MyRetrofitConfig.execute(retrofitClient.getUserByID(findID));
         System.out.println(responseUserByID);
 
         // Task #1/6 получение информации о пользователе с опредленным username
         String findUserName = "Samantha";
         System.out.println("\n*************************************");
         System.out.println("Task #1/6. Find object 'User' by username = '"+findUserName+"'\n");
-        List<User> responseUserByUserName = execute(client.getUserByUserName(findUserName));
+        List<User> responseUserByUserName = MyRetrofitConfig.execute(retrofitClient.getUserByUserName(findUserName));
         System.out.println(responseUserByUserName);
 
         // Task #2
         Integer userID = 3;
         System.out.println("\n*************************************");
         System.out.println("Task #2. Get all user's posts for user_ID ["+userID+"]\n");
-        List<UserPost> listPosts = execute(client.getUserPosts(userID.toString()));
+        List<UserPost> listPosts = MyRetrofitConfig.execute(retrofitClient.getUserPosts(userID.toString()));
         // last post:
         UserPost lastPost = Collections.max(listPosts, new Comparator<UserPost>() {
             @Override
@@ -78,7 +79,7 @@ public class Main {
                 return 1;
             }
         });
-        List<Comment> listComments = execute(client.getComments(lastPost.getId().toString()));
+        List<Comment> listComments = MyRetrofitConfig.execute(retrofitClient.getComments(lastPost.getId().toString()));
         String fileName = "user-"+userID+"-post-"+lastPost.getId()+"-comments.json";
         try (
                 FileWriter fileJson = new FileWriter(fileName)){
@@ -89,7 +90,7 @@ public class Main {
         // Task #3
         System.out.println("\n*************************************");
         System.out.println("Task #3. List of unfinished todos for user_ID "+userID+" \n");
-        List<ToDo> listTodos = execute(client.getTodos(userID.toString(),false));
+        List<ToDo> listTodos = MyRetrofitConfig.execute(retrofitClient.getTodos(userID.toString(),false));
         System.out.println(listTodos);
     }
 

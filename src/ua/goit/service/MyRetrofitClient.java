@@ -1,7 +1,12 @@
-package homework;
+package ua.goit.service;
 
 import retrofit2.Call;
 import retrofit2.http.*;
+import ua.goit.model.Comment;
+import ua.goit.model.ToDo;
+import ua.goit.model.User;
+import ua.goit.model.UserPost;
+
 import java.util.List;
 
 public interface MyRetrofitClient {

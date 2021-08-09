@@ -1,6 +1,7 @@
-package homework;
+package ua.goit.model;
 
 import com.google.gson.annotations.SerializedName;
+import ua.goit.model.Geo;
 
 public class PostAddress{
     @SerializedName("street")
